@@ -34,7 +34,11 @@ void Viewer::A_propos()
 void Viewer::Ouvrir()
 {
 	Fichier=QFileDialog::getOpenFileName(this,tr("Fichier a ouvrir"),*MonRep,tr("Tout fichier(*);;(*.png *.jpg *.bmp)"));
-	Image = new QXImage(Fichier);
+	if(Fichier != NULL)
+	{
+		Image = new QImage(Fichier);
+		update();
+	}
 }
 
 void Viewer::Quitter()

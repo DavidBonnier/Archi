@@ -35,9 +35,6 @@ void QXImage::toGrayscale ( bool keepAlpha)
 
 void QXImage::Seuillage ( int Min, int Max )
 {
-	if(isNull())
-		return;
-
 	QImage Alpha = alphaChannel();
 	int NoirBlanc;
 	for(int i=0; i<width(); i++)
@@ -51,6 +48,21 @@ void QXImage::Seuillage ( int Min, int Max )
 				NoirBlanc=0;
 
 			setPixel(i,j,qRgb(NoirBlanc,NoirBlanc,NoirBlanc));
+		}
+	setAlphaChannel(Alpha);
+}
+
+void QXImage::Reglage ( int ValR, int ValG, int ValB )
+{
+	QImage Alpha = alphaChannel();
+	for(int i=0; i<width(); i++)
+		for(int j=0; j<height();j++)
+		{
+			int bleu = qBlue (pixel(i,j));
+			int vert = qGreen (pixel(i,j));
+			int rouge = qRed(pixel(i,j));
+
+			setPixel(i,j,qRgb(rouge+ValR,vert+ValG,bleu+ValB));
 		}
 	setAlphaChannel(Alpha);
 }

@@ -63,6 +63,10 @@ private slots:
 	void ValidationSeuillage();
 	void AnnulationSeuillage();
 	void ChangementSeuillage();
+	void AfficheReglageWidget();
+	void ValidationCouleur();
+	void AnnulationCouleur();
+	void ReglageCouleur();
 };
 
 #endif // VIEWER_H

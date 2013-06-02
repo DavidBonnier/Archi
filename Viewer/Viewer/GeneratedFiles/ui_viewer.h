@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'viewer.ui'
 **
-** Created: Sun 2. Jun 01:57:44 2013
+** Created: Sun 2. Jun 02:55:36 2013
 **      by: Qt User Interface Compiler version 4.8.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -16,12 +16,15 @@
 #include <QtGui/QButtonGroup>
 #include <QtGui/QDockWidget>
 #include <QtGui/QFormLayout>
+#include <QtGui/QGridLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
 #include <QtGui/QMainWindow>
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
 #include <QtGui/QPushButton>
+#include <QtGui/QSlider>
+#include <QtGui/QSpacerItem>
 #include <QtGui/QSpinBox>
 #include <QtGui/QStatusBar>
 #include <QtGui/QToolBar>
@@ -57,21 +60,39 @@ public:
     QMenu *menu;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
-    QDockWidget *DWdockWidget;
+    QDockWidget *DWSeuillage;
     QWidget *dockWidgetContents_3;
     QFormLayout *formLayout_2;
-    QPushButton *pushButtonValider;
-    QPushButton *pushButtonAnnuler;
-    QLabel *labelMinimum;
-    QLabel *labelMaximum;
-    QSpinBox *spinBoxMinimum;
-    QSpinBox *spinBoxMaximum;
+    QPushButton *pButtonValiderSeuillage;
+    QPushButton *pButtonAnnulerSeuillage;
+    QLabel *labelMinSeuillage;
+    QLabel *labelMaxSeuillage;
+    QSpinBox *spinBoxMinSeuillage;
+    QSpinBox *spinBoxMaxSeuillage;
+    QDockWidget *DWReglage;
+    QWidget *dockWidgetContents_2;
+    QGridLayout *gridLayout;
+    QLabel *labelRouge;
+    QSlider *hSliderRouge;
+    QSlider *hSliderBleu;
+    QSlider *hSliderVert;
+    QLabel *labelNbRouge;
+    QLabel *labelVert;
+    QLabel *labelNbLumosite;
+    QLabel *labelNbVert;
+    QLabel *labelBleu;
+    QLabel *labelNbBleu;
+    QPushButton *pButtonValiderCouleur;
+    QPushButton *pButtonAnnulerCouleur;
+    QLabel *labelLuminosite;
+    QSlider *hSliderLumosite;
+    QSpacerItem *verticalSpacer;
 
     void setupUi(QMainWindow *ViewerClass)
     {
         if (ViewerClass->objectName().isEmpty())
             ViewerClass->setObjectName(QString::fromUtf8("ViewerClass"));
-        ViewerClass->resize(600, 400);
+        ViewerClass->resize(600, 401);
         actionOuvrir = new QAction(ViewerClass);
         actionOuvrir->setObjectName(QString::fromUtf8("actionOuvrir"));
         actionFermer = new QAction(ViewerClass);
@@ -142,46 +163,144 @@ public:
         statusBar = new QStatusBar(ViewerClass);
         statusBar->setObjectName(QString::fromUtf8("statusBar"));
         ViewerClass->setStatusBar(statusBar);
-        DWdockWidget = new QDockWidget(ViewerClass);
-        DWdockWidget->setObjectName(QString::fromUtf8("DWdockWidget"));
+        DWSeuillage = new QDockWidget(ViewerClass);
+        DWSeuillage->setObjectName(QString::fromUtf8("DWSeuillage"));
         dockWidgetContents_3 = new QWidget();
         dockWidgetContents_3->setObjectName(QString::fromUtf8("dockWidgetContents_3"));
         formLayout_2 = new QFormLayout(dockWidgetContents_3);
         formLayout_2->setSpacing(6);
         formLayout_2->setContentsMargins(11, 11, 11, 11);
         formLayout_2->setObjectName(QString::fromUtf8("formLayout_2"));
-        pushButtonValider = new QPushButton(dockWidgetContents_3);
-        pushButtonValider->setObjectName(QString::fromUtf8("pushButtonValider"));
+        pButtonValiderSeuillage = new QPushButton(dockWidgetContents_3);
+        pButtonValiderSeuillage->setObjectName(QString::fromUtf8("pButtonValiderSeuillage"));
 
-        formLayout_2->setWidget(2, QFormLayout::LabelRole, pushButtonValider);
+        formLayout_2->setWidget(2, QFormLayout::LabelRole, pButtonValiderSeuillage);
 
-        pushButtonAnnuler = new QPushButton(dockWidgetContents_3);
-        pushButtonAnnuler->setObjectName(QString::fromUtf8("pushButtonAnnuler"));
+        pButtonAnnulerSeuillage = new QPushButton(dockWidgetContents_3);
+        pButtonAnnulerSeuillage->setObjectName(QString::fromUtf8("pButtonAnnulerSeuillage"));
 
-        formLayout_2->setWidget(2, QFormLayout::FieldRole, pushButtonAnnuler);
+        formLayout_2->setWidget(2, QFormLayout::FieldRole, pButtonAnnulerSeuillage);
 
-        labelMinimum = new QLabel(dockWidgetContents_3);
-        labelMinimum->setObjectName(QString::fromUtf8("labelMinimum"));
+        labelMinSeuillage = new QLabel(dockWidgetContents_3);
+        labelMinSeuillage->setObjectName(QString::fromUtf8("labelMinSeuillage"));
+        labelMinSeuillage->setFrameShape(QFrame::NoFrame);
 
-        formLayout_2->setWidget(0, QFormLayout::LabelRole, labelMinimum);
+        formLayout_2->setWidget(0, QFormLayout::LabelRole, labelMinSeuillage);
 
-        labelMaximum = new QLabel(dockWidgetContents_3);
-        labelMaximum->setObjectName(QString::fromUtf8("labelMaximum"));
+        labelMaxSeuillage = new QLabel(dockWidgetContents_3);
+        labelMaxSeuillage->setObjectName(QString::fromUtf8("labelMaxSeuillage"));
 
-        formLayout_2->setWidget(1, QFormLayout::LabelRole, labelMaximum);
+        formLayout_2->setWidget(1, QFormLayout::LabelRole, labelMaxSeuillage);
 
-        spinBoxMinimum = new QSpinBox(dockWidgetContents_3);
-        spinBoxMinimum->setObjectName(QString::fromUtf8("spinBoxMinimum"));
+        spinBoxMinSeuillage = new QSpinBox(dockWidgetContents_3);
+        spinBoxMinSeuillage->setObjectName(QString::fromUtf8("spinBoxMinSeuillage"));
 
-        formLayout_2->setWidget(0, QFormLayout::FieldRole, spinBoxMinimum);
+        formLayout_2->setWidget(0, QFormLayout::FieldRole, spinBoxMinSeuillage);
 
-        spinBoxMaximum = new QSpinBox(dockWidgetContents_3);
-        spinBoxMaximum->setObjectName(QString::fromUtf8("spinBoxMaximum"));
+        spinBoxMaxSeuillage = new QSpinBox(dockWidgetContents_3);
+        spinBoxMaxSeuillage->setObjectName(QString::fromUtf8("spinBoxMaxSeuillage"));
 
-        formLayout_2->setWidget(1, QFormLayout::FieldRole, spinBoxMaximum);
+        formLayout_2->setWidget(1, QFormLayout::FieldRole, spinBoxMaxSeuillage);
 
-        DWdockWidget->setWidget(dockWidgetContents_3);
-        ViewerClass->addDockWidget(static_cast<Qt::DockWidgetArea>(1), DWdockWidget);
+        DWSeuillage->setWidget(dockWidgetContents_3);
+        ViewerClass->addDockWidget(static_cast<Qt::DockWidgetArea>(1), DWSeuillage);
+        DWReglage = new QDockWidget(ViewerClass);
+        DWReglage->setObjectName(QString::fromUtf8("DWReglage"));
+        dockWidgetContents_2 = new QWidget();
+        dockWidgetContents_2->setObjectName(QString::fromUtf8("dockWidgetContents_2"));
+        gridLayout = new QGridLayout(dockWidgetContents_2);
+        gridLayout->setSpacing(6);
+        gridLayout->setContentsMargins(11, 11, 11, 11);
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        labelRouge = new QLabel(dockWidgetContents_2);
+        labelRouge->setObjectName(QString::fromUtf8("labelRouge"));
+
+        gridLayout->addWidget(labelRouge, 4, 1, 1, 1);
+
+        hSliderRouge = new QSlider(dockWidgetContents_2);
+        hSliderRouge->setObjectName(QString::fromUtf8("hSliderRouge"));
+        hSliderRouge->setMinimum(-100);
+        hSliderRouge->setMaximum(100);
+        hSliderRouge->setOrientation(Qt::Horizontal);
+
+        gridLayout->addWidget(hSliderRouge, 4, 0, 1, 1);
+
+        hSliderBleu = new QSlider(dockWidgetContents_2);
+        hSliderBleu->setObjectName(QString::fromUtf8("hSliderBleu"));
+        hSliderBleu->setMinimum(-100);
+        hSliderBleu->setMaximum(100);
+        hSliderBleu->setOrientation(Qt::Horizontal);
+
+        gridLayout->addWidget(hSliderBleu, 6, 0, 1, 1);
+
+        hSliderVert = new QSlider(dockWidgetContents_2);
+        hSliderVert->setObjectName(QString::fromUtf8("hSliderVert"));
+        hSliderVert->setMinimum(-100);
+        hSliderVert->setMaximum(100);
+        hSliderVert->setOrientation(Qt::Horizontal);
+
+        gridLayout->addWidget(hSliderVert, 5, 0, 1, 1);
+
+        labelNbRouge = new QLabel(dockWidgetContents_2);
+        labelNbRouge->setObjectName(QString::fromUtf8("labelNbRouge"));
+
+        gridLayout->addWidget(labelNbRouge, 4, 2, 1, 1);
+
+        labelVert = new QLabel(dockWidgetContents_2);
+        labelVert->setObjectName(QString::fromUtf8("labelVert"));
+
+        gridLayout->addWidget(labelVert, 5, 1, 1, 1);
+
+        labelNbLumosite = new QLabel(dockWidgetContents_2);
+        labelNbLumosite->setObjectName(QString::fromUtf8("labelNbLumosite"));
+
+        gridLayout->addWidget(labelNbLumosite, 2, 2, 1, 1);
+
+        labelNbVert = new QLabel(dockWidgetContents_2);
+        labelNbVert->setObjectName(QString::fromUtf8("labelNbVert"));
+
+        gridLayout->addWidget(labelNbVert, 5, 2, 1, 1);
+
+        labelBleu = new QLabel(dockWidgetContents_2);
+        labelBleu->setObjectName(QString::fromUtf8("labelBleu"));
+
+        gridLayout->addWidget(labelBleu, 6, 1, 1, 1);
+
+        labelNbBleu = new QLabel(dockWidgetContents_2);
+        labelNbBleu->setObjectName(QString::fromUtf8("labelNbBleu"));
+
+        gridLayout->addWidget(labelNbBleu, 6, 2, 1, 1);
+
+        pButtonValiderCouleur = new QPushButton(dockWidgetContents_2);
+        pButtonValiderCouleur->setObjectName(QString::fromUtf8("pButtonValiderCouleur"));
+
+        gridLayout->addWidget(pButtonValiderCouleur, 8, 0, 1, 1);
+
+        pButtonAnnulerCouleur = new QPushButton(dockWidgetContents_2);
+        pButtonAnnulerCouleur->setObjectName(QString::fromUtf8("pButtonAnnulerCouleur"));
+
+        gridLayout->addWidget(pButtonAnnulerCouleur, 8, 1, 1, 2);
+
+        labelLuminosite = new QLabel(dockWidgetContents_2);
+        labelLuminosite->setObjectName(QString::fromUtf8("labelLuminosite"));
+        labelLuminosite->setLineWidth(1);
+
+        gridLayout->addWidget(labelLuminosite, 1, 0, 1, 1);
+
+        hSliderLumosite = new QSlider(dockWidgetContents_2);
+        hSliderLumosite->setObjectName(QString::fromUtf8("hSliderLumosite"));
+        hSliderLumosite->setMinimum(-100);
+        hSliderLumosite->setMaximum(100);
+        hSliderLumosite->setOrientation(Qt::Horizontal);
+
+        gridLayout->addWidget(hSliderLumosite, 2, 0, 1, 1);
+
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        gridLayout->addItem(verticalSpacer, 9, 0, 1, 1);
+
+        DWReglage->setWidget(dockWidgetContents_2);
+        ViewerClass->addDockWidget(static_cast<Qt::DockWidgetArea>(1), DWReglage);
 
         menuBar->addAction(menuFichier->menuAction());
         menuBar->addAction(menuEdition->menuAction());
@@ -241,11 +360,22 @@ public:
         menuCaract_riqtique_Images->setTitle(QApplication::translate("ViewerClass", "Caract\303\251riqtique Images", 0, QApplication::UnicodeUTF8));
         menuModif->setTitle(QApplication::translate("ViewerClass", "Modif", 0, QApplication::UnicodeUTF8));
         menu->setTitle(QApplication::translate("ViewerClass", "?", 0, QApplication::UnicodeUTF8));
-        DWdockWidget->setWindowTitle(QApplication::translate("ViewerClass", "Seuillage", 0, QApplication::UnicodeUTF8));
-        pushButtonValider->setText(QApplication::translate("ViewerClass", "Valider", 0, QApplication::UnicodeUTF8));
-        pushButtonAnnuler->setText(QApplication::translate("ViewerClass", "Annuler", 0, QApplication::UnicodeUTF8));
-        labelMinimum->setText(QApplication::translate("ViewerClass", "Minimum", 0, QApplication::UnicodeUTF8));
-        labelMaximum->setText(QApplication::translate("ViewerClass", "Maximum", 0, QApplication::UnicodeUTF8));
+        DWSeuillage->setWindowTitle(QApplication::translate("ViewerClass", "Seuillage", 0, QApplication::UnicodeUTF8));
+        pButtonValiderSeuillage->setText(QApplication::translate("ViewerClass", "Valider", 0, QApplication::UnicodeUTF8));
+        pButtonAnnulerSeuillage->setText(QApplication::translate("ViewerClass", "Annuler", 0, QApplication::UnicodeUTF8));
+        labelMinSeuillage->setText(QApplication::translate("ViewerClass", "<html><head/><body><p><span style=\" font-size:10pt; font-weight:600;\">Minimum</span></p></body></html>", 0, QApplication::UnicodeUTF8));
+        labelMaxSeuillage->setText(QApplication::translate("ViewerClass", "<html><head/><body><p><span style=\" font-size:10pt; font-weight:600;\">Maximum</span></p></body></html>", 0, QApplication::UnicodeUTF8));
+        DWReglage->setWindowTitle(QApplication::translate("ViewerClass", "R\303\251glage des couleurs", 0, QApplication::UnicodeUTF8));
+        labelRouge->setText(QApplication::translate("ViewerClass", "<html><head/><body><p><span style=\" font-size:10pt; color:#ff0000;\">R</span></p></body></html>", 0, QApplication::UnicodeUTF8));
+        labelNbRouge->setText(QApplication::translate("ViewerClass", "00", 0, QApplication::UnicodeUTF8));
+        labelVert->setText(QApplication::translate("ViewerClass", "<html><head/><body><p><span style=\" font-size:10pt; color:#00ff00;\">V</span></p></body></html>", 0, QApplication::UnicodeUTF8));
+        labelNbLumosite->setText(QApplication::translate("ViewerClass", "00", 0, QApplication::UnicodeUTF8));
+        labelNbVert->setText(QApplication::translate("ViewerClass", "00", 0, QApplication::UnicodeUTF8));
+        labelBleu->setText(QApplication::translate("ViewerClass", "<html><head/><body><p><span style=\" font-size:10pt; color:#0000ff;\">B</span></p></body></html>", 0, QApplication::UnicodeUTF8));
+        labelNbBleu->setText(QApplication::translate("ViewerClass", "00", 0, QApplication::UnicodeUTF8));
+        pButtonValiderCouleur->setText(QApplication::translate("ViewerClass", "Valider", 0, QApplication::UnicodeUTF8));
+        pButtonAnnulerCouleur->setText(QApplication::translate("ViewerClass", "Annuler", 0, QApplication::UnicodeUTF8));
+        labelLuminosite->setText(QApplication::translate("ViewerClass", "<html><head/><body><p><span style=\" font-size:10pt; font-weight:600;\">Luminosit\303\251</span></p></body></html>", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

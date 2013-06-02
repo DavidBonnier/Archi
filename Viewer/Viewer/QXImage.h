@@ -13,6 +13,7 @@ public:
 public:
 	void toGrayscale ( bool keepAlpha = true);
 	void Seuillage ( int Min, int Max );
+	void Reglage ( int ValR, int ValG, int ValB );
 
 private:
 

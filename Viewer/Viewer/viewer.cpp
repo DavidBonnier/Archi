@@ -24,15 +24,25 @@ Viewer::Viewer(QWidget *parent, Qt::WFlags flags)
 	connect (ui.actionImage_Noir_et_Blanc,SIGNAL(triggered()),this,SLOT(ImageNoirBlanc()));
 	connect (ui.actionInverser_Image,SIGNAL(triggered()),this,SLOT(InverserImage()));
 	connect (ui.actionSeuillage,SIGNAL(triggered()),this,SLOT(AfficheSeuillageWidget()));
+	connect (ui.actionModifications_des_couleurs,SIGNAL(triggered()),this,SLOT(AfficheReglageWidget()));
 
 	//QDockWidget Seuillage
-	connect (ui.pushButtonValider,SIGNAL(clicked()),this,SLOT(ValidationSeuillage()));
-	connect (ui.pushButtonAnnuler,SIGNAL(clicked()),this,SLOT(AnnulationSeuillage()));
-	connect (ui.spinBoxMaximum,SIGNAL(valueChanged(int)),this,SLOT(ChangementSeuillage()));
-	connect (ui.spinBoxMinimum,SIGNAL(valueChanged(int)),this,SLOT(ChangementSeuillage()));
-	ui.DWdockWidget->hide();
-	ui.spinBoxMaximum->setRange(0,255);
-	ui.spinBoxMinimum->setRange(0,255);
+	connect (ui.pButtonValiderSeuillage,SIGNAL(clicked()),this,SLOT(ValidationSeuillage()));
+	connect (ui.pButtonAnnulerSeuillage,SIGNAL(clicked()),this,SLOT(AnnulationSeuillage()));
+	connect (ui.spinBoxMaxSeuillage,SIGNAL(valueChanged(int)),this,SLOT(ChangementSeuillage()));
+	connect (ui.spinBoxMinSeuillage,SIGNAL(valueChanged(int)),this,SLOT(ChangementSeuillage()));
+	ui.DWSeuillage->hide();
+	ui.spinBoxMaxSeuillage->setRange(0,255);
+	ui.spinBoxMinSeuillage->setRange(0,255);
+
+	//QDockWidget Réglage des couleurs
+	connect (ui.pButtonValiderCouleur,SIGNAL(clicked()),this,SLOT(ValidationCouleur()));
+	connect (ui.pButtonAnnulerCouleur,SIGNAL(clicked()),this,SLOT(AnnulationCouleur()));
+	connect (ui.hSliderLumosite,SIGNAL(valueChanged(int)),this,SLOT(ReglageCouleur()));
+	connect (ui.hSliderRouge,SIGNAL(valueChanged(int)),this,SLOT(ReglageCouleur()));
+	connect (ui.hSliderVert,SIGNAL(valueChanged(int)),this,SLOT(ReglageCouleur()));
+	connect (ui.hSliderBleu,SIGNAL(valueChanged(int)),this,SLOT(ReglageCouleur()));
+	ui.DWReglage->hide();
 
 	//Initialisation des scrollBar quand image est trop grand
 	scrollArea = new QScrollArea;
@@ -41,7 +51,6 @@ Viewer::Viewer(QWidget *parent, Qt::WFlags flags)
 	setCentralWidget(scrollArea);
 
 	MonRep = QString("../../Fichier");
-	ui.DWdockWidget->hide();
 }
 
 Viewer::~Viewer()
@@ -65,10 +74,15 @@ void Viewer::paintEvent(QPaintEvent * evt)
 	}
 
 	//J'ai touvé cette parade si on ferme le dock widget par la croix
-	if(ui.DWdockWidget->isVisible())
+	if(ui.DWSeuillage->isVisible())
 		ui.actionSeuillage->setChecked(true);
 	else
 		ui.actionSeuillage->setChecked(false);
+
+	if(ui.DWReglage->isVisible())
+		ui.actionModifications_des_couleurs->setChecked(true);
+	else
+		ui.actionModifications_des_couleurs->setChecked(false);
 }
 
 void Viewer::closeEvent(QCloseEvent *event)
@@ -169,7 +183,7 @@ void Viewer::Sauver_sous()
 void Viewer::Fermer()
 {
 	ui.actionSeuillage->setChecked(false);
-	ui.DWdockWidget->hide();
+	ui.DWSeuillage->hide();
 	BoutonActionEnable(false);
 
 	if(!nomImage.isEmpty())
@@ -200,7 +214,7 @@ void Viewer::DepilerAnnuler ()
 	else
 		QMessageBox::information(this,"Image Viewer",
 		"La pile est vide");
-	
+
 	if(nomImage.isEmpty())
 		BoutonActionEnable(false);
 	else
@@ -253,10 +267,16 @@ void Viewer::InverserImage()
 
 void Viewer::AfficheSeuillageWidget()
 {
+	if(ui.actionModifications_des_couleurs->isChecked())
+	{
+		ui.actionModifications_des_couleurs->setChecked(false);
+		ui.DWReglage->hide();
+	}
+
 	if(ui.actionSeuillage->isChecked())
-		ui.DWdockWidget->show();
+		ui.DWSeuillage->show();
 	else
-		ui.DWdockWidget->hide();
+		ui.DWSeuillage->hide();
 
 	ImageTemp = Image;
 }
@@ -265,21 +285,72 @@ void Viewer::ValidationSeuillage()
 {
 	AjoutEtoile = true;
 	EmpilerAnnuler(ImageTemp);
-	ui.DWdockWidget->hide();
+	ui.DWSeuillage->hide();
 	ui.actionSeuillage->setChecked(false);
 }
 
 void Viewer::AnnulationSeuillage()
 {
+	ui.spinBoxMinSeuillage->setValue(0);
+	ui.spinBoxMaxSeuillage->setValue(0);
 	Image = ImageTemp;
 }
 
 void Viewer::ChangementSeuillage()
 {
 	Image = ImageTemp;
-	int Min = ui.spinBoxMinimum->value();
-	int Max = ui.spinBoxMaximum->value();
-	ui.spinBoxMinimum->setMaximum(Max);
-	ui.spinBoxMaximum->setMinimum(Min);
+	int Min = ui.spinBoxMinSeuillage->value();
+	int Max = ui.spinBoxMaxSeuillage->value();
+	ui.spinBoxMinSeuillage->setMaximum(Max);
+	ui.spinBoxMaxSeuillage->setMinimum(Min);
 	Image.Seuillage(Min, Max);
+}
+
+void Viewer::AfficheReglageWidget()
+{
+	if(ui.actionSeuillage->isChecked())
+	{
+		ui.actionSeuillage->setChecked(false);
+		ui.DWSeuillage->hide();
+	}
+
+	if(ui.actionModifications_des_couleurs->isChecked())
+		ui.DWReglage->show();
+	else
+		ui.DWReglage->hide();
+
+	ImageTemp = Image;
+}
+
+void Viewer::ValidationCouleur()
+{
+	AjoutEtoile = true;
+	EmpilerAnnuler(ImageTemp);
+	ui.DWReglage->hide();
+	ui.actionModifications_des_couleurs->setChecked(false);
+}
+
+void Viewer::AnnulationCouleur()
+{
+	ui.hSliderLumosite->setValue(0);
+	ui.hSliderRouge->setValue(0);
+	ui.hSliderVert->setValue(0);
+	ui.hSliderBleu->setValue(0);
+	Image = ImageTemp;
+}
+
+void Viewer::ReglageCouleur()
+{
+	Image = ImageTemp;
+	int alpha = ui.hSliderLumosite->value();
+	int rouge = ui.hSliderRouge->value();
+	int vert = ui.hSliderVert->value();
+	int bleu = ui.hSliderBleu->value();
+
+	Image.Reglage(rouge, vert, bleu);
+
+	ui.labelNbLumosite->setText(QString::number(alpha));
+	ui.labelNbRouge->setText(QString::number(rouge));
+	ui.labelNbVert->setText(QString::number(vert));
+	ui.labelNbBleu->setText(QString::number(bleu));
 }

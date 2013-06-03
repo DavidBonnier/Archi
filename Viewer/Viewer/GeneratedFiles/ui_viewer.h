@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'viewer.ui'
 **
-** Created: Sun 2. Jun 02:55:36 2013
+** Created: Mon 3. Jun 11:21:49 2013
 **      by: Qt User Interface Compiler version 4.8.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -50,6 +50,12 @@ public:
     QAction *actionImage_Noir_et_Blanc;
     QAction *actionInverser_Image;
     QAction *actionModifications_des_couleurs;
+    QAction *actionMiroir_horizontal_de_l_image;
+    QAction *actionMiroir_vertical_de_l_image;
+    QAction *actionFaire_un_quart_de_tour;
+    QAction *actionSpectre_de_l_image;
+    QAction *actionAddition;
+    QAction *actionSoustraction;
     QWidget *centralWidget;
     QLabel *imageLabel;
     QMenuBar *menuBar;
@@ -58,6 +64,7 @@ public:
     QMenu *menuCaract_riqtique_Images;
     QMenu *menuModif;
     QMenu *menu;
+    QMenu *menuOperations_de_base;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
     QDockWidget *DWSeuillage;
@@ -137,6 +144,24 @@ public:
         actionModifications_des_couleurs->setObjectName(QString::fromUtf8("actionModifications_des_couleurs"));
         actionModifications_des_couleurs->setCheckable(true);
         actionModifications_des_couleurs->setEnabled(false);
+        actionMiroir_horizontal_de_l_image = new QAction(ViewerClass);
+        actionMiroir_horizontal_de_l_image->setObjectName(QString::fromUtf8("actionMiroir_horizontal_de_l_image"));
+        actionMiroir_horizontal_de_l_image->setEnabled(false);
+        actionMiroir_vertical_de_l_image = new QAction(ViewerClass);
+        actionMiroir_vertical_de_l_image->setObjectName(QString::fromUtf8("actionMiroir_vertical_de_l_image"));
+        actionMiroir_vertical_de_l_image->setEnabled(false);
+        actionFaire_un_quart_de_tour = new QAction(ViewerClass);
+        actionFaire_un_quart_de_tour->setObjectName(QString::fromUtf8("actionFaire_un_quart_de_tour"));
+        actionFaire_un_quart_de_tour->setEnabled(false);
+        actionSpectre_de_l_image = new QAction(ViewerClass);
+        actionSpectre_de_l_image->setObjectName(QString::fromUtf8("actionSpectre_de_l_image"));
+        actionSpectre_de_l_image->setEnabled(false);
+        actionAddition = new QAction(ViewerClass);
+        actionAddition->setObjectName(QString::fromUtf8("actionAddition"));
+        actionAddition->setEnabled(false);
+        actionSoustraction = new QAction(ViewerClass);
+        actionSoustraction->setObjectName(QString::fromUtf8("actionSoustraction"));
+        actionSoustraction->setEnabled(false);
         centralWidget = new QWidget(ViewerClass);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         imageLabel = new QLabel(centralWidget);
@@ -156,6 +181,8 @@ public:
         menuModif->setObjectName(QString::fromUtf8("menuModif"));
         menu = new QMenu(menuBar);
         menu->setObjectName(QString::fromUtf8("menu"));
+        menuOperations_de_base = new QMenu(menuBar);
+        menuOperations_de_base->setObjectName(QString::fromUtf8("menuOperations_de_base"));
         ViewerClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(ViewerClass);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -165,6 +192,7 @@ public:
         ViewerClass->setStatusBar(statusBar);
         DWSeuillage = new QDockWidget(ViewerClass);
         DWSeuillage->setObjectName(QString::fromUtf8("DWSeuillage"));
+        DWSeuillage->setFeatures(QDockWidget::DockWidgetMovable);
         dockWidgetContents_3 = new QWidget();
         dockWidgetContents_3->setObjectName(QString::fromUtf8("dockWidgetContents_3"));
         formLayout_2 = new QFormLayout(dockWidgetContents_3);
@@ -206,6 +234,7 @@ public:
         ViewerClass->addDockWidget(static_cast<Qt::DockWidgetArea>(1), DWSeuillage);
         DWReglage = new QDockWidget(ViewerClass);
         DWReglage->setObjectName(QString::fromUtf8("DWReglage"));
+        DWReglage->setFeatures(QDockWidget::DockWidgetMovable);
         dockWidgetContents_2 = new QWidget();
         dockWidgetContents_2->setObjectName(QString::fromUtf8("dockWidgetContents_2"));
         gridLayout = new QGridLayout(dockWidgetContents_2);
@@ -306,6 +335,7 @@ public:
         menuBar->addAction(menuEdition->menuAction());
         menuBar->addAction(menuCaract_riqtique_Images->menuAction());
         menuBar->addAction(menuModif->menuAction());
+        menuBar->addAction(menuOperations_de_base->menuAction());
         menuBar->addAction(menu->menuAction());
         menuFichier->addAction(actionOuvrir);
         menuFichier->addAction(actionFermer);
@@ -317,12 +347,19 @@ public:
         menuEdition->addAction(actionRefaire);
         menuEdition->addAction(actionDetruire_Pile_Avant_et_Arri_re);
         menuCaract_riqtique_Images->addAction(actionModification_de_la_Taille);
+        menuCaract_riqtique_Images->addAction(actionMiroir_horizontal_de_l_image);
+        menuCaract_riqtique_Images->addAction(actionMiroir_vertical_de_l_image);
+        menuCaract_riqtique_Images->addAction(actionFaire_un_quart_de_tour);
+        menuCaract_riqtique_Images->addSeparator();
+        menuCaract_riqtique_Images->addAction(actionSpectre_de_l_image);
         menuModif->addAction(actionImage_Noir_et_Blanc);
         menuModif->addAction(actionInverser_Image);
         menuModif->addAction(actionSeuillage);
         menuModif->addAction(actionModifications_des_couleurs);
         menu->addAction(actionAide);
         menu->addAction(actionA_propos);
+        menuOperations_de_base->addAction(actionAddition);
+        menuOperations_de_base->addAction(actionSoustraction);
 
         retranslateUi(ViewerClass);
 
@@ -354,12 +391,19 @@ public:
         actionImage_Noir_et_Blanc->setText(QApplication::translate("ViewerClass", "Image Noir et Blanc", 0, QApplication::UnicodeUTF8));
         actionInverser_Image->setText(QApplication::translate("ViewerClass", "Inverser une Image", 0, QApplication::UnicodeUTF8));
         actionModifications_des_couleurs->setText(QApplication::translate("ViewerClass", "R\303\251glages des couleurs", 0, QApplication::UnicodeUTF8));
+        actionMiroir_horizontal_de_l_image->setText(QApplication::translate("ViewerClass", "Miroir horizontal de l'image", 0, QApplication::UnicodeUTF8));
+        actionMiroir_vertical_de_l_image->setText(QApplication::translate("ViewerClass", "Miroir vertical de l'image", 0, QApplication::UnicodeUTF8));
+        actionFaire_un_quart_de_tour->setText(QApplication::translate("ViewerClass", "Faire un quart de tour", 0, QApplication::UnicodeUTF8));
+        actionSpectre_de_l_image->setText(QApplication::translate("ViewerClass", "Spectre de l'image", 0, QApplication::UnicodeUTF8));
+        actionAddition->setText(QApplication::translate("ViewerClass", "Addition", 0, QApplication::UnicodeUTF8));
+        actionSoustraction->setText(QApplication::translate("ViewerClass", "Soustraction", 0, QApplication::UnicodeUTF8));
         imageLabel->setText(QString());
         menuFichier->setTitle(QApplication::translate("ViewerClass", "Fichier", 0, QApplication::UnicodeUTF8));
         menuEdition->setTitle(QApplication::translate("ViewerClass", "Edition", 0, QApplication::UnicodeUTF8));
         menuCaract_riqtique_Images->setTitle(QApplication::translate("ViewerClass", "Caract\303\251riqtique Images", 0, QApplication::UnicodeUTF8));
         menuModif->setTitle(QApplication::translate("ViewerClass", "Modif", 0, QApplication::UnicodeUTF8));
         menu->setTitle(QApplication::translate("ViewerClass", "?", 0, QApplication::UnicodeUTF8));
+        menuOperations_de_base->setTitle(QApplication::translate("ViewerClass", "Operations de base", 0, QApplication::UnicodeUTF8));
         DWSeuillage->setWindowTitle(QApplication::translate("ViewerClass", "Seuillage", 0, QApplication::UnicodeUTF8));
         pButtonValiderSeuillage->setText(QApplication::translate("ViewerClass", "Valider", 0, QApplication::UnicodeUTF8));
         pButtonAnnulerSeuillage->setText(QApplication::translate("ViewerClass", "Annuler", 0, QApplication::UnicodeUTF8));

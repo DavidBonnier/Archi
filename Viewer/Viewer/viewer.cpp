@@ -7,6 +7,9 @@ Viewer::Viewer(QWidget *parent, Qt::WFlags flags)
 	AjoutEtoile(false)
 {
 	ui.setupUi(this);
+
+	tailleImage=NULL;
+
 	//Connect du menu Fichier
 	connect (ui.actionA_propos,SIGNAL(triggered()),this,SLOT(A_propos()));
 	connect (ui.actionOuvrir,SIGNAL(triggered()),this,SLOT(Ouvrir()));
@@ -19,6 +22,9 @@ Viewer::Viewer(QWidget *parent, Qt::WFlags flags)
 	connect (ui.actionAnnuler,SIGNAL(triggered()),this,SLOT(DepilerAnnuler()));
 	connect (ui.actionRefaire,SIGNAL(triggered()),this,SLOT(DepilerRefaire()));
 	connect (ui.actionDetruire_Pile_Avant_et_Arri_re,SIGNAL(triggered()),this,SLOT(DetruirePiles()));
+
+	//Carractériqtique Images
+	connect (ui.actionModification_de_la_Taille,SIGNAL(triggered()),this,SLOT(modifTailleImage()));
 
 	//Connect du menu modif
 	connect (ui.actionImage_Noir_et_Blanc,SIGNAL(triggered()),this,SLOT(ImageNoirBlanc()));
@@ -64,6 +70,11 @@ void Viewer::paintEvent(QPaintEvent * evt)
 	setWindowTitle("Visualisation d'images " + nomImage);
 	if(AjoutEtoile)
 		setWindowTitle("Visualisation d'images " + nomImage + "*");
+	
+	if(tailleImage!=NULL)
+		Image=Image.scaled(tailleImage->getDim());
+
+	Image.size();
 
 	//Affcihe image sur le QLabel
 	if (!Image.isNull()||!pixmap.isNull())
@@ -72,17 +83,6 @@ void Viewer::paintEvent(QPaintEvent * evt)
 		ui.imageLabel->setPixmap(pixmap);
 		ui.imageLabel->resize(pixmap.size());
 	}
-
-	//J'ai touvé cette parade si on ferme le dock widget par la croix
-	if(ui.DWSeuillage->isVisible())
-		ui.actionSeuillage->setChecked(true);
-	else
-		ui.actionSeuillage->setChecked(false);
-
-	if(ui.DWReglage->isVisible())
-		ui.actionModifications_des_couleurs->setChecked(true);
-	else
-		ui.actionModifications_des_couleurs->setChecked(false);
 }
 
 void Viewer::closeEvent(QCloseEvent *event)
@@ -110,7 +110,13 @@ void Viewer::BoutonActionEnable(bool Enable)
 	ui.actionImage_Noir_et_Blanc-> setEnabled(Enable);
 	ui.actionModifications_des_couleurs-> setEnabled(Enable);
 	ui.actionModification_de_la_Taille-> setEnabled(Enable);
+	ui.actionMiroir_horizontal_de_l_image-> setEnabled(Enable);
+	ui.actionMiroir_vertical_de_l_image-> setEnabled(Enable);
+	ui.actionFaire_un_quart_de_tour-> setEnabled(Enable);
+	ui.actionSpectre_de_l_image-> setEnabled(Enable);
 	ui.actionSeuillage-> setEnabled(Enable);
+	ui.actionAddition-> setEnabled(Enable);
+	ui.actionSoustraction-> setEnabled(Enable);
 }
 
 bool Viewer::peutEtreSauver()
@@ -353,4 +359,11 @@ void Viewer::ReglageCouleur()
 	ui.labelNbRouge->setText(QString::number(rouge));
 	ui.labelNbVert->setText(QString::number(vert));
 	ui.labelNbBleu->setText(QString::number(bleu));
+}
+
+void Viewer::modifTailleImage()
+{
+	tailleImage =  new CMaTaille (this, Image.width(),Image.height());
+	tailleImage->setAttribute(Qt::WA_DeleteOnClose);
+	tailleImage->show();
 }

@@ -61,6 +61,11 @@
      <string>Caractériqtique Images</string>
     </property>
     <addaction name="actionModification_de_la_Taille"/>
+    <addaction name="actionMiroir_horizontal_de_l_image"/>
+    <addaction name="actionMiroir_vertical_de_l_image"/>
+    <addaction name="actionFaire_un_quart_de_tour"/>
+    <addaction name="separator"/>
+    <addaction name="actionSpectre_de_l_image"/>
    </widget>
    <widget class="QMenu" name="menuModif">
     <property name="title">
@@ -78,10 +83,18 @@
     <addaction name="actionAide"/>
     <addaction name="actionA_propos"/>
    </widget>
+   <widget class="QMenu" name="menuOperations_de_base">
+    <property name="title">
+     <string>Operations de base</string>
+    </property>
+    <addaction name="actionAddition"/>
+    <addaction name="actionSoustraction"/>
+   </widget>
    <addaction name="menuFichier"/>
    <addaction name="menuEdition"/>
    <addaction name="menuCaract_riqtique_Images"/>
    <addaction name="menuModif"/>
+   <addaction name="menuOperations_de_base"/>
    <addaction name="menu"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -94,6 +107,9 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="DWSeuillage">
+   <property name="features">
+    <set>QDockWidget::DockWidgetMovable</set>
+   </property>
    <property name="windowTitle">
     <string>Seuillage</string>
    </property>
@@ -143,6 +159,9 @@
    </widget>
   </widget>
   <widget class="QDockWidget" name="DWReglage">
+   <property name="features">
+    <set>QDockWidget::DockWidgetMovable</set>
+   </property>
    <property name="windowTitle">
     <string>Réglage des couleurs</string>
    </property>
@@ -428,6 +447,54 @@
    </property>
    <property name="text">
     <string>Réglages des couleurs</string>
+   </property>
+  </action>
+  <action name="actionMiroir_horizontal_de_l_image">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Miroir horizontal de l'image</string>
+   </property>
+  </action>
+  <action name="actionMiroir_vertical_de_l_image">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Miroir vertical de l'image</string>
+   </property>
+  </action>
+  <action name="actionFaire_un_quart_de_tour">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Faire un quart de tour</string>
+   </property>
+  </action>
+  <action name="actionSpectre_de_l_image">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Spectre de l'image</string>
+   </property>
+  </action>
+  <action name="actionAddition">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Addition</string>
+   </property>
+  </action>
+  <action name="actionSoustraction">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Soustraction</string>
    </property>
   </action>
  </widget>

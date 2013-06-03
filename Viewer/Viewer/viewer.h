@@ -5,6 +5,7 @@
 #include "ui_viewer.h"
 
 #include "QXImage.h"
+#include "MaTaille.h"
 
 #include "QPoint"
 #include <QString>
@@ -23,6 +24,7 @@ public:
 	QXImage ImageTemp;
 	QPixmap pixmap;
 	QPoint Dim;
+	CMaTaille *tailleImage;
 
 private:
 	Ui::ViewerClass ui;
@@ -67,6 +69,7 @@ private slots:
 	void ValidationCouleur();
 	void AnnulationCouleur();
 	void ReglageCouleur();
+	void modifTailleImage();
 };
 
 #endif // VIEWER_H

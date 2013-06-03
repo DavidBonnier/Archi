@@ -6,8 +6,13 @@ QXImage::QXImage()
 
 }
 
-QXImage::QXImage(QString nomFichier) :
-QImage(nomFichier)
+QXImage::QXImage(QImage image)
+	: QImage(image)
+{
+}
+
+QXImage::QXImage(QString nomFichier)
+  : QImage(nomFichier)
 {
 }
 
@@ -15,6 +20,11 @@ QXImage::~QXImage()
 {
 }
 
+
+QXImage& QXImage::operator = (const QImage &image)
+{
+	return QXImage(image);
+}
 
 void QXImage::toGrayscale ( bool keepAlpha)
 {
@@ -29,8 +39,8 @@ void QXImage::toGrayscale ( bool keepAlpha)
 			gris = qGray(pixel(i,j));
 			setPixel(i,j,qRgb(gris,gris,gris));
 		}
-	if (keepAlpha)
-		setAlphaChannel(Alpha);
+		if (keepAlpha)
+			setAlphaChannel(Alpha);
 }
 
 void QXImage::Seuillage ( int Min, int Max )
@@ -49,20 +59,28 @@ void QXImage::Seuillage ( int Min, int Max )
 
 			setPixel(i,j,qRgb(NoirBlanc,NoirBlanc,NoirBlanc));
 		}
-	setAlphaChannel(Alpha);
+		setAlphaChannel(Alpha);
 }
 
 void QXImage::Reglage ( int ValR, int ValG, int ValB )
 {
-	QImage Alpha = alphaChannel();
 	for(int i=0; i<width(); i++)
 		for(int j=0; j<height();j++)
 		{
-			int bleu = qBlue (pixel(i,j));
-			int vert = qGreen (pixel(i,j));
-			int rouge = qRed(pixel(i,j));
+			int bleu = addValeur(qBlue(pixel(i,j)), ValB);
+			int vert = addValeur(qGreen(pixel(i,j)), ValG);
+			int rouge = addValeur(qRed(pixel(i,j)), ValR);
 
-			setPixel(i,j,qRgb(rouge+ValR,vert+ValG,bleu+ValB));
+			setPixel(i, j, qRgb(rouge,vert,bleu));
 		}
-	setAlphaChannel(Alpha);
+}
+
+int QXImage::addValeur(int couleur, int valeur)
+{
+	int newColor = valeur + valeur;
+	if (newColor < 0)
+		newColor = 0;
+	else if (newColor > 255)
+		newColor = 255;
+	return newColor;
 }

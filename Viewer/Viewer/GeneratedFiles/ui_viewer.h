@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'viewer.ui'
 **
-** Created: Mon 3. Jun 11:21:49 2013
+** Created: Tue 4. Jun 03:10:09 2013
 **      by: Qt User Interface Compiler version 4.8.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -17,17 +17,20 @@
 #include <QtGui/QDockWidget>
 #include <QtGui/QFormLayout>
 #include <QtGui/QGridLayout>
+#include <QtGui/QGroupBox>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
 #include <QtGui/QMainWindow>
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
 #include <QtGui/QPushButton>
+#include <QtGui/QRadioButton>
 #include <QtGui/QSlider>
 #include <QtGui/QSpacerItem>
 #include <QtGui/QSpinBox>
 #include <QtGui/QStatusBar>
 #include <QtGui/QToolBar>
+#include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -56,6 +59,7 @@ public:
     QAction *actionSpectre_de_l_image;
     QAction *actionAddition;
     QAction *actionSoustraction;
+    QAction *actionFaire_un_demi_tour;
     QWidget *centralWidget;
     QLabel *imageLabel;
     QMenuBar *menuBar;
@@ -94,12 +98,22 @@ public:
     QLabel *labelLuminosite;
     QSlider *hSliderLumosite;
     QSpacerItem *verticalSpacer;
+    QDockWidget *DWSpectreImage;
+    QWidget *dockWidgetContents;
+    QVBoxLayout *verticalLayout;
+    QGroupBox *groupBox;
+    QGridLayout *gridLayout_2;
+    QRadioButton *radioButtonSpectreBleu;
+    QRadioButton *radioButtonSpectreVert;
+    QRadioButton *radioButtonSpectreRouge;
+    QRadioButton *radioButtonSpectreTout;
+    QWidget *widget;
 
     void setupUi(QMainWindow *ViewerClass)
     {
         if (ViewerClass->objectName().isEmpty())
             ViewerClass->setObjectName(QString::fromUtf8("ViewerClass"));
-        ViewerClass->resize(600, 401);
+        ViewerClass->resize(830, 886);
         actionOuvrir = new QAction(ViewerClass);
         actionOuvrir->setObjectName(QString::fromUtf8("actionOuvrir"));
         actionFermer = new QAction(ViewerClass);
@@ -155,6 +169,7 @@ public:
         actionFaire_un_quart_de_tour->setEnabled(false);
         actionSpectre_de_l_image = new QAction(ViewerClass);
         actionSpectre_de_l_image->setObjectName(QString::fromUtf8("actionSpectre_de_l_image"));
+        actionSpectre_de_l_image->setCheckable(true);
         actionSpectre_de_l_image->setEnabled(false);
         actionAddition = new QAction(ViewerClass);
         actionAddition->setObjectName(QString::fromUtf8("actionAddition"));
@@ -162,6 +177,9 @@ public:
         actionSoustraction = new QAction(ViewerClass);
         actionSoustraction->setObjectName(QString::fromUtf8("actionSoustraction"));
         actionSoustraction->setEnabled(false);
+        actionFaire_un_demi_tour = new QAction(ViewerClass);
+        actionFaire_un_demi_tour->setObjectName(QString::fromUtf8("actionFaire_un_demi_tour"));
+        actionFaire_un_demi_tour->setEnabled(false);
         centralWidget = new QWidget(ViewerClass);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         imageLabel = new QLabel(centralWidget);
@@ -170,7 +188,7 @@ public:
         ViewerClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(ViewerClass);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 600, 21));
+        menuBar->setGeometry(QRect(0, 0, 830, 21));
         menuFichier = new QMenu(menuBar);
         menuFichier->setObjectName(QString::fromUtf8("menuFichier"));
         menuEdition = new QMenu(menuBar);
@@ -330,6 +348,53 @@ public:
 
         DWReglage->setWidget(dockWidgetContents_2);
         ViewerClass->addDockWidget(static_cast<Qt::DockWidgetArea>(1), DWReglage);
+        DWSpectreImage = new QDockWidget(ViewerClass);
+        DWSpectreImage->setObjectName(QString::fromUtf8("DWSpectreImage"));
+        DWSpectreImage->setMinimumSize(QSize(296, 159));
+        DWSpectreImage->setFeatures(QDockWidget::DockWidgetMovable);
+        dockWidgetContents = new QWidget();
+        dockWidgetContents->setObjectName(QString::fromUtf8("dockWidgetContents"));
+        verticalLayout = new QVBoxLayout(dockWidgetContents);
+        verticalLayout->setSpacing(6);
+        verticalLayout->setContentsMargins(11, 11, 11, 11);
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        groupBox = new QGroupBox(dockWidgetContents);
+        groupBox->setObjectName(QString::fromUtf8("groupBox"));
+        gridLayout_2 = new QGridLayout(groupBox);
+        gridLayout_2->setSpacing(6);
+        gridLayout_2->setContentsMargins(11, 11, 11, 11);
+        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+        radioButtonSpectreBleu = new QRadioButton(groupBox);
+        radioButtonSpectreBleu->setObjectName(QString::fromUtf8("radioButtonSpectreBleu"));
+
+        gridLayout_2->addWidget(radioButtonSpectreBleu, 4, 0, 1, 1);
+
+        radioButtonSpectreVert = new QRadioButton(groupBox);
+        radioButtonSpectreVert->setObjectName(QString::fromUtf8("radioButtonSpectreVert"));
+
+        gridLayout_2->addWidget(radioButtonSpectreVert, 3, 0, 1, 1);
+
+        radioButtonSpectreRouge = new QRadioButton(groupBox);
+        radioButtonSpectreRouge->setObjectName(QString::fromUtf8("radioButtonSpectreRouge"));
+
+        gridLayout_2->addWidget(radioButtonSpectreRouge, 0, 0, 1, 1);
+
+        radioButtonSpectreTout = new QRadioButton(groupBox);
+        radioButtonSpectreTout->setObjectName(QString::fromUtf8("radioButtonSpectreTout"));
+
+        gridLayout_2->addWidget(radioButtonSpectreTout, 3, 1, 1, 1);
+
+
+        verticalLayout->addWidget(groupBox);
+
+        widget = new QWidget(dockWidgetContents);
+        widget->setObjectName(QString::fromUtf8("widget"));
+
+        verticalLayout->addWidget(widget);
+
+        DWSpectreImage->setWidget(dockWidgetContents);
+        ViewerClass->addDockWidget(static_cast<Qt::DockWidgetArea>(1), DWSpectreImage);
+        DWReglage->raise();
 
         menuBar->addAction(menuFichier->menuAction());
         menuBar->addAction(menuEdition->menuAction());
@@ -350,6 +415,7 @@ public:
         menuCaract_riqtique_Images->addAction(actionMiroir_horizontal_de_l_image);
         menuCaract_riqtique_Images->addAction(actionMiroir_vertical_de_l_image);
         menuCaract_riqtique_Images->addAction(actionFaire_un_quart_de_tour);
+        menuCaract_riqtique_Images->addAction(actionFaire_un_demi_tour);
         menuCaract_riqtique_Images->addSeparator();
         menuCaract_riqtique_Images->addAction(actionSpectre_de_l_image);
         menuModif->addAction(actionImage_Noir_et_Blanc);
@@ -397,6 +463,7 @@ public:
         actionSpectre_de_l_image->setText(QApplication::translate("ViewerClass", "Spectre de l'image", 0, QApplication::UnicodeUTF8));
         actionAddition->setText(QApplication::translate("ViewerClass", "Addition", 0, QApplication::UnicodeUTF8));
         actionSoustraction->setText(QApplication::translate("ViewerClass", "Soustraction", 0, QApplication::UnicodeUTF8));
+        actionFaire_un_demi_tour->setText(QApplication::translate("ViewerClass", "Faire un demi-tour", 0, QApplication::UnicodeUTF8));
         imageLabel->setText(QString());
         menuFichier->setTitle(QApplication::translate("ViewerClass", "Fichier", 0, QApplication::UnicodeUTF8));
         menuEdition->setTitle(QApplication::translate("ViewerClass", "Edition", 0, QApplication::UnicodeUTF8));
@@ -420,6 +487,12 @@ public:
         pButtonValiderCouleur->setText(QApplication::translate("ViewerClass", "Valider", 0, QApplication::UnicodeUTF8));
         pButtonAnnulerCouleur->setText(QApplication::translate("ViewerClass", "Annuler", 0, QApplication::UnicodeUTF8));
         labelLuminosite->setText(QApplication::translate("ViewerClass", "<html><head/><body><p><span style=\" font-size:10pt; font-weight:600;\">Luminosit\303\251</span></p></body></html>", 0, QApplication::UnicodeUTF8));
+        DWSpectreImage->setWindowTitle(QApplication::translate("ViewerClass", "Spectre de l'image", 0, QApplication::UnicodeUTF8));
+        groupBox->setTitle(QApplication::translate("ViewerClass", "Choisir une couleur", 0, QApplication::UnicodeUTF8));
+        radioButtonSpectreBleu->setText(QApplication::translate("ViewerClass", "B", 0, QApplication::UnicodeUTF8));
+        radioButtonSpectreVert->setText(QApplication::translate("ViewerClass", "G", 0, QApplication::UnicodeUTF8));
+        radioButtonSpectreRouge->setText(QApplication::translate("ViewerClass", "R", 0, QApplication::UnicodeUTF8));
+        radioButtonSpectreTout->setText(QApplication::translate("ViewerClass", "Tout", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

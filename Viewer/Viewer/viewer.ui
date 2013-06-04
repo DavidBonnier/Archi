@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>401</height>
+    <width>830</width>
+    <height>886</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -33,7 +33,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>600</width>
+     <width>830</width>
      <height>21</height>
     </rect>
    </property>
@@ -64,6 +64,7 @@
     <addaction name="actionMiroir_horizontal_de_l_image"/>
     <addaction name="actionMiroir_vertical_de_l_image"/>
     <addaction name="actionFaire_un_quart_de_tour"/>
+    <addaction name="actionFaire_un_demi_tour"/>
     <addaction name="separator"/>
     <addaction name="actionSpectre_de_l_image"/>
    </widget>
@@ -311,6 +312,67 @@
     </layout>
    </widget>
   </widget>
+  <widget class="QDockWidget" name="DWSpectreImage">
+   <property name="minimumSize">
+    <size>
+     <width>296</width>
+     <height>159</height>
+    </size>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetMovable</set>
+   </property>
+   <property name="windowTitle">
+    <string>Spectre de l'image</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="title">
+        <string>Choisir une couleur</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="4" column="0">
+         <widget class="QRadioButton" name="radioButtonSpectreBleu">
+          <property name="text">
+           <string>B</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QRadioButton" name="radioButtonSpectreVert">
+          <property name="text">
+           <string>G</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QRadioButton" name="radioButtonSpectreRouge">
+          <property name="text">
+           <string>R</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QRadioButton" name="radioButtonSpectreTout">
+          <property name="text">
+           <string>Tout</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QWidget" name="MonHisto" native="true"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
   <action name="actionOuvrir">
    <property name="text">
     <string>Ouvrir</string>
@@ -474,6 +536,9 @@
    </property>
   </action>
   <action name="actionSpectre_de_l_image">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -497,6 +562,15 @@
     <string>Soustraction</string>
    </property>
   </action>
+  <action name="actionFaire_un_demi_tour">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Faire un demi-tour</string>
+   </property>
+  </action>
+  <zorder>DWReglage</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>

@@ -59,17 +59,26 @@ private slots:
 	void DepilerAnnuler ();
 	void DepilerRefaire ();
 	void DetruirePiles ();
-	void ImageNoirBlanc();
-	void InverserImage();
-	void AfficheSeuillageWidget();
-	void ValidationSeuillage();
-	void AnnulationSeuillage();
-	void ChangementSeuillage();
-	void AfficheReglageWidget();
-	void ValidationCouleur();
-	void AnnulationCouleur();
-	void ReglageCouleur();
-	void modifTailleImage();
+	void ImageNoirBlanc ();
+	void InverserImage ();
+	void AfficheSeuillageWidget ();
+	void ValidationSeuillage ();
+	void AnnulationSeuillage ();
+	void ChangementSeuillage ();
+	void AfficheReglageWidget ();
+	void ValidationCouleur ();
+	void AnnulationCouleur ();
+	void ReglageCouleur ();
+	void modifTailleImage ();
+	void MiroirH ();
+	void MiroirV ();
+	void Quart ();
+	void DemiTour ();
+	void Histo ();
+	void SpectreBleu();
+	void SpectreRouge();
+	void SpectreVert();
+	void SpectreTout();
 };
 
 #endif // VIEWER_H

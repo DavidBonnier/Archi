@@ -1,18 +1,18 @@
 #include "qximage.h"
 #include "qstring.h"
+#include "qtransform.h"
 
 QXImage::QXImage()
 {
-
 }
 
 QXImage::QXImage(QImage image)
-	: QImage(image)
+	:QImage(image)
 {
 }
 
 QXImage::QXImage(QString nomFichier)
-  : QImage(nomFichier)
+	: QImage(nomFichier)
 {
 }
 
@@ -20,10 +20,14 @@ QXImage::~QXImage()
 {
 }
 
-
 QXImage& QXImage::operator = (const QImage &image)
 {
-	return QXImage(image);
+	return *this;
+}
+
+int * QXImage::Histo ( int Coul, int &Maxi)
+{
+
 }
 
 void QXImage::toGrayscale ( bool keepAlpha)
@@ -83,4 +87,12 @@ int QXImage::addValeur(int couleur, int valeur)
 	else if (newColor > 255)
 		newColor = 255;
 	return newColor;
+}
+
+QXImage QXImage::Tourner ( int Quart)
+{
+	QTransform transphormation;
+	transphormation = transphormation.rotate(90*Quart);
+
+	return transformed(transphormation);
 }

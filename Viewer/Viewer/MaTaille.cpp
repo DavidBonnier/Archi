@@ -43,12 +43,10 @@ void CMaTaille::Larg()
 {
 	if(!IsModifier)
 	{
-		m_nLargeur = ui.spinBoxLargeur->value();
 		if(ui.checkBoxProportionel->isChecked())
 		{
 			IsModifier=true;
-			m_nHauteur = m_nLargeur*m_proportion;
-			ui.spinBoxHauteur->setValue(m_nHauteur);
+			ui.spinBoxHauteur->setValue(ui.spinBoxLargeur->value()*m_proportion);
 		}
 	}
 	else
@@ -59,12 +57,10 @@ void CMaTaille::Haut()
 {
 	if(!IsModifier)
 	{
-		m_nHauteur = ui.spinBoxHauteur->value();
 		if(ui.checkBoxProportionel->isChecked())
 		{
 			IsModifier=true;
-			m_nLargeur = m_nHauteur/m_proportion;
-			ui.spinBoxLargeur->setValue(m_nLargeur);
+			ui.spinBoxLargeur->setValue(ui.spinBoxHauteur->value()/m_proportion);
 		}
 	}
 	else

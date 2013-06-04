@@ -25,6 +25,18 @@ Viewer::Viewer(QWidget *parent, Qt::WFlags flags)
 
 	//Carractériqtique Images
 	connect (ui.actionModification_de_la_Taille,SIGNAL(triggered()),this,SLOT(modifTailleImage()));
+	connect (ui.actionMiroir_horizontal_de_l_image,SIGNAL(triggered()),this,SLOT(MiroirH()));
+	connect (ui.actionMiroir_vertical_de_l_image,SIGNAL(triggered()),this,SLOT(MiroirV()));
+	connect (ui.actionFaire_un_quart_de_tour,SIGNAL(triggered()),this,SLOT(Quart()));
+	connect (ui.actionFaire_un_demi_tour,SIGNAL(triggered()),this,SLOT(DemiTour()));
+
+	//Spzctre Image
+	connect (ui.actionSpectre_de_l_image,SIGNAL(triggered()),this,SLOT(Histo()));
+	ui.DWSpectreImage->hide();
+	connect (ui.radioButtonSpectreBleu,SIGNAL(clicked()),this,SLOT(SpectreBleu()));
+	connect (ui.radioButtonSpectreRouge,SIGNAL(clicked()),this,SLOT(SpectreRouge()));
+	connect (ui.radioButtonSpectreVert,SIGNAL(clicked()),this,SLOT(SpectreVert()));
+	connect (ui.radioButtonSpectreTout,SIGNAL(clicked()),this,SLOT(SpectreTout()));
 
 	//Connect du menu modif
 	connect (ui.actionImage_Noir_et_Blanc,SIGNAL(triggered()),this,SLOT(ImageNoirBlanc()));
@@ -70,11 +82,17 @@ void Viewer::paintEvent(QPaintEvent * evt)
 	setWindowTitle("Visualisation d'images " + nomImage);
 	if(AjoutEtoile)
 		setWindowTitle("Visualisation d'images " + nomImage + "*");
-	
-	if(tailleImage!=NULL)
-		Image=Image.scaled(tailleImage->getDim());
 
-	Image.size();
+	if(tailleImage!=NULL)
+	{
+		if(tailleImage->isHidden())
+		{
+			delete tailleImage;
+			tailleImage = NULL;
+		}
+		else
+			Image = Image.scaled(tailleImage->getDim());
+	}
 
 	//Affcihe image sur le QLabel
 	if (!Image.isNull()||!pixmap.isNull())
@@ -117,6 +135,7 @@ void Viewer::BoutonActionEnable(bool Enable)
 	ui.actionSeuillage-> setEnabled(Enable);
 	ui.actionAddition-> setEnabled(Enable);
 	ui.actionSoustraction-> setEnabled(Enable);
+	ui.actionFaire_un_demi_tour-> setEnabled(Enable);
 }
 
 bool Viewer::peutEtreSauver()
@@ -273,14 +292,14 @@ void Viewer::InverserImage()
 
 void Viewer::AfficheSeuillageWidget()
 {
-	if(ui.actionModifications_des_couleurs->isChecked())
+	if(ui.actionSeuillage->isChecked())
 	{
 		ui.actionModifications_des_couleurs->setChecked(false);
 		ui.DWReglage->hide();
-	}
-
-	if(ui.actionSeuillage->isChecked())
+		ui.actionSpectre_de_l_image->setChecked(false);
+		ui.DWSpectreImage->hide();
 		ui.DWSeuillage->show();
+	}
 	else
 		ui.DWSeuillage->hide();
 
@@ -314,14 +333,14 @@ void Viewer::ChangementSeuillage()
 
 void Viewer::AfficheReglageWidget()
 {
-	if(ui.actionSeuillage->isChecked())
+	if(ui.actionModifications_des_couleurs->isChecked())
 	{
 		ui.actionSeuillage->setChecked(false);
 		ui.DWSeuillage->hide();
-	}
-
-	if(ui.actionModifications_des_couleurs->isChecked())
+		ui.actionSpectre_de_l_image->setChecked(false);
+		ui.DWSpectreImage->hide();
 		ui.DWReglage->show();
+	}
 	else
 		ui.DWReglage->hide();
 
@@ -364,6 +383,70 @@ void Viewer::ReglageCouleur()
 void Viewer::modifTailleImage()
 {
 	tailleImage =  new CMaTaille (this, Image.width(),Image.height());
-	tailleImage->setAttribute(Qt::WA_DeleteOnClose);
 	tailleImage->show();
+}
+
+void Viewer::MiroirH ()
+{
+	EmpilerAnnuler(Image);
+	Image = Image.mirrored(true,false);
+}
+
+void Viewer::MiroirV ()
+{
+	EmpilerAnnuler(Image);
+	//Valeur par défaut mais plus clair
+	Image = Image.mirrored(false,true);
+}
+
+void Viewer::Quart ()
+{
+	EmpilerAnnuler(Image);
+	Image = Image.Tourner(1);
+}
+
+void Viewer::DemiTour ()
+{
+	EmpilerAnnuler(Image);
+	Image = Image.Tourner(2);
+}
+
+void Viewer::Histo ()
+{
+	if(ui.actionSpectre_de_l_image->isChecked())
+	{
+		ui.actionSeuillage->setChecked(false);
+		ui.DWSeuillage->hide();
+		ui.actionModifications_des_couleurs->setChecked(false);
+		ui.DWReglage->hide();
+		ui.DWSpectreImage->show();
+	}
+	else
+		ui.DWSpectreImage->hide();
+
+	ImageTemp = Image;
+}
+
+void Viewer::SpectreBleu()
+{
+	int Max;
+	Image.Histo(3,Max);
+}
+
+void Viewer::SpectreRouge()
+{
+	int Max;
+	Image.Histo(1,Max);
+}
+
+void Viewer::SpectreVert()
+{
+	int Max;
+	Image.Histo(2,Max);
+}
+
+void Viewer::SpectreTout()
+{
+	int Max;
+	Image.Histo(0,Max);
 }

@@ -22,12 +22,13 @@ QXImage::~QXImage()
 
 QXImage& QXImage::operator = (const QImage &image)
 {
-	return *this;
+	return *this = QXImage(image);
 }
 
 int * QXImage::Histo ( int Coul, int &Maxi)
 {
-
+	int *tableau;
+	return tableau;
 }
 
 void QXImage::toGrayscale ( bool keepAlpha)

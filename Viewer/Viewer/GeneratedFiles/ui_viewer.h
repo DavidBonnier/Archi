@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'viewer.ui'
 **
-** Created: Tue 4. Jun 03:10:09 2013
+** Created: Tue 4. Jun 11:12:29 2013
 **      by: Qt User Interface Compiler version 4.8.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -107,7 +107,7 @@ public:
     QRadioButton *radioButtonSpectreVert;
     QRadioButton *radioButtonSpectreRouge;
     QRadioButton *radioButtonSpectreTout;
-    QWidget *widget;
+    QWidget *MonHisto;
 
     void setupUi(QMainWindow *ViewerClass)
     {
@@ -387,10 +387,10 @@ public:
 
         verticalLayout->addWidget(groupBox);
 
-        widget = new QWidget(dockWidgetContents);
-        widget->setObjectName(QString::fromUtf8("widget"));
+        MonHisto = new QWidget(dockWidgetContents);
+        MonHisto->setObjectName(QString::fromUtf8("MonHisto"));
 
-        verticalLayout->addWidget(widget);
+        verticalLayout->addWidget(MonHisto);
 
         DWSpectreImage->setWidget(dockWidgetContents);
         ViewerClass->addDockWidget(static_cast<Qt::DockWidgetArea>(1), DWSpectreImage);

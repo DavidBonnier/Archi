@@ -87,11 +87,12 @@ void Viewer::paintEvent(QPaintEvent * evt)
 	{
 		if(tailleImage->isHidden())
 		{
+			AjoutEtoile = true;
+			EmpilerAnnuler(Image);
+			Image = Image.scaled(tailleImage->getDim());
 			delete tailleImage;
 			tailleImage = NULL;
 		}
-		else
-			Image = Image.scaled(tailleImage->getDim());
 	}
 
 	//Affcihe image sur le QLabel
@@ -388,12 +389,14 @@ void Viewer::modifTailleImage()
 
 void Viewer::MiroirH ()
 {
+	AjoutEtoile = true;
 	EmpilerAnnuler(Image);
 	Image = Image.mirrored(true,false);
 }
 
 void Viewer::MiroirV ()
 {
+	AjoutEtoile = true;
 	EmpilerAnnuler(Image);
 	//Valeur par défaut mais plus clair
 	Image = Image.mirrored(false,true);
@@ -401,12 +404,14 @@ void Viewer::MiroirV ()
 
 void Viewer::Quart ()
 {
+	AjoutEtoile = true;
 	EmpilerAnnuler(Image);
 	Image = Image.Tourner(1);
 }
 
 void Viewer::DemiTour ()
 {
+	AjoutEtoile = true;
 	EmpilerAnnuler(Image);
 	Image = Image.Tourner(2);
 }

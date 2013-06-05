@@ -27,7 +27,8 @@ QXImage& QXImage::operator = (const QImage &image)
 
 int * QXImage::Histo ( int Coul, int &Maxi)
 {
-	int *tableau;
+	int tableau[256];
+	++tableau[10];
 	return tableau;
 }
 
@@ -67,22 +68,22 @@ void QXImage::Seuillage ( int Min, int Max )
 		setAlphaChannel(Alpha);
 }
 
-void QXImage::Reglage ( int ValR, int ValG, int ValB )
+void QXImage::Reglage ( int ValA, int ValR, int ValG, int ValB )
 {
 	for(int i=0; i<width(); i++)
 		for(int j=0; j<height();j++)
 		{
-			int bleu = addValeur(qBlue(pixel(i,j)), ValB);
-			int vert = addValeur(qGreen(pixel(i,j)), ValG);
-			int rouge = addValeur(qRed(pixel(i,j)), ValR);
+			int bleu = addValeur(qBlue(pixel(i,j)), ValB, ValA);
+			int vert = addValeur(qGreen(pixel(i,j)), ValG, ValA);
+			int rouge = addValeur(qRed(pixel(i,j)), ValR, ValA);
 
 			setPixel(i, j, qRgb(rouge,vert,bleu));
 		}
 }
 
-int QXImage::addValeur(int couleur, int valeur)
+int QXImage::addValeur(int couleur, int valeur, int valeur1)
 {
-	int newColor = valeur + valeur;
+	int newColor = couleur + valeur + valeur1;
 	if (newColor < 0)
 		newColor = 0;
 	else if (newColor > 255)
@@ -96,4 +97,20 @@ QXImage QXImage::Tourner ( int Quart)
 	transphormation = transphormation.rotate(90*Quart);
 
 	return transformed(transphormation);
+}
+
+void QXImage::SommeSoustraire ( QXImage tmp, int signe)
+{
+	tmp = tmp.scaled(width(),height());
+
+	for(int i=0; i<width(); i++)
+		for(int j=0; j<height();j++)
+		{
+			//multiplier par -1 change le signe et par 1 reste comme c'est
+			int bleu = addValeur(qBlue(pixel(i,j)), qBlue(tmp.pixel(i,j))*signe);
+			int vert = addValeur(qGreen(pixel(i,j)), qGreen(tmp.pixel(i,j))*signe);
+			int rouge = addValeur(qRed(pixel(i,j)), qRed(tmp.pixel(i,j))*signe);
+
+			setPixel(i, j, qRgb(rouge,vert,bleu));
+		}
 }

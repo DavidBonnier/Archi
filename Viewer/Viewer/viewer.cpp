@@ -62,6 +62,10 @@ Viewer::Viewer(QWidget *parent, Qt::WFlags flags)
 	connect (ui.hSliderBleu,SIGNAL(valueChanged(int)),this,SLOT(ReglageCouleur()));
 	ui.DWReglage->hide();
 
+	//Connect du menu Opération de base
+	connect (ui.actionAddition,SIGNAL(triggered()),this,SLOT(Somme()));
+	connect (ui.actionSoustraction,SIGNAL(triggered()),this,SLOT(Soustraire()));
+
 	//Initialisation des scrollBar quand image est trop grand
 	scrollArea = new QScrollArea;
 	scrollArea->setBackgroundRole(QPalette::Dark);
@@ -80,6 +84,7 @@ void Viewer::paintEvent(QPaintEvent * evt)
 {
 	//Getion du titre de la fenetre avec un bool pour etoile ou pas
 	setWindowTitle("Visualisation d'images " + nomImage);
+	//Si l'image a été modifier car que je modifie AjoutEtoile passe a true
 	if(AjoutEtoile)
 		setWindowTitle("Visualisation d'images " + nomImage + "*");
 
@@ -87,8 +92,7 @@ void Viewer::paintEvent(QPaintEvent * evt)
 	{
 		if(tailleImage->isHidden())
 		{
-			AjoutEtoile = true;
-			EmpilerAnnuler(Image);
+			empilerAnnuler(Image);
 			Image = Image.scaled(tailleImage->getDim());
 			delete tailleImage;
 			tailleImage = NULL;
@@ -113,14 +117,16 @@ void Viewer::closeEvent(QCloseEvent *event)
 }
 
 
-void Viewer::EmpilerAnnuler (QXImage img)
+void Viewer::empilerAnnuler (QXImage img)
 {
+	//Dès que j'empile une image sa veut dire que je l'ai modifier donc *
+	AjoutEtoile = true;
 	Pile.push(img);
 	PileNom.push(nomImage);
 }
 
 //Mondification des bouton action savoir si il sont utilisable ou non
-void Viewer::BoutonActionEnable(bool Enable)
+void Viewer::boutonActionEnable(bool Enable)
 {
 	ui.actionFermer-> setEnabled(Enable);
 	ui.actionSauver-> setEnabled(Enable);
@@ -157,8 +163,22 @@ bool Viewer::peutEtreSauver()
 			return false;
 	}
 
-	EmpilerAnnuler(Image);
+	empilerAnnuler(Image);
 	return true;
+}
+
+bool Viewer::ouvertureFichier(QString &fichierOuvert, QXImage &imageOuvert)
+{
+	fichierOuvert=QFileDialog::getOpenFileName(this,tr("Ouverture d'un fichier Image"),MonRep,tr("Tout fichier(*);;(*.png *.jpg *.bmp)"));
+	if(!fichierOuvert.isEmpty())
+	{
+		imageOuvert = QXImage(fichierOuvert);
+		//Vue que l'on charge un fichier on peut passer les boutons action peuvent etre utilisés
+		boutonActionEnable(true);
+		return true;
+	}
+	else
+		return false;
 }
 
 
@@ -181,12 +201,8 @@ void Viewer::Ouvrir()
 	if(!Fichier.isEmpty())
 		Fermer();
 
-	Fichier=QFileDialog::getOpenFileName(this,tr("Ouverture d'un fichier Image"),MonRep,tr("Tout fichier(*);;(*.png *.jpg *.bmp)"));
-	if(!Fichier.isEmpty())
+	if(ouvertureFichier(Fichier, Image))
 	{
-		Image = QXImage(Fichier);
-		//Vue que l'on charge un fichier on peut passer les boutons action peuvent etre utilisés
-		BoutonActionEnable(true);
 		nomImage = Fichier.split("/").back();
 		update();
 	}
@@ -194,7 +210,7 @@ void Viewer::Ouvrir()
 
 void Viewer::Sauver()
 {
-	EmpilerAnnuler(Image);
+	empilerAnnuler(Image);
 	Image.save(Fichier);
 	AjoutEtoile = false;
 	update();
@@ -202,20 +218,42 @@ void Viewer::Sauver()
 
 void Viewer::Sauver_sous()
 {
-	Fichier = QFileDialog::getSaveFileName(this,tr("Sauvgarder Fichier"),MonRep,tr("Tout fichier(*);;(*.png *.jpg *.bmp)"));
-	Sauver();
+	Fichier = QFileDialog::getSaveFileName(this,tr("Sauvgarder Fichier"),MonRep,tr("(*.png *.jpg *.bmp)"));
+	QString extention (Fichier.split(".").back());
+	//vérification des 3 extention avant de continuer
+	if(extention!="png" && extention!="jpg" && extention!="bmp")
+	{
+		QMessageBox::warning(this,"Viewer",
+			"<b>Image non enregistré</b>"
+			"<p>pas d'extention ou mauvaise extention</p>"
+			"<p> Les extentions supporter sont : <b>bmp</b> ; <b>jpg</b> ; <b>png</b> ",
+			"OK");
+	}
+	else
+		if(!Fichier.isEmpty())
+		{
+			Image = QXImage(Fichier);
+			//Vue que l'on a un fichier on peut passer les boutons action peuvent etre utilisés
+			boutonActionEnable(true);
+			nomImage = Fichier.split("/").back();
+			Sauver();
+			update();
+		}
 }
 
 void Viewer::Fermer()
 {
-	ui.actionSeuillage->setChecked(false);
-	ui.DWSeuillage->hide();
-	BoutonActionEnable(false);
-
 	if(!nomImage.isEmpty())
 	{
 		if (peutEtreSauver())
 		{
+			ui.actionSeuillage->setChecked(false);
+			ui.DWSeuillage->hide();
+			ui.actionModifications_des_couleurs->setChecked(false);
+			ui.DWReglage->hide();
+			ui.actionSpectre_de_l_image->setChecked(false);
+			ui.DWSpectreImage->hide();
+			boutonActionEnable(false);
 			nomImage = "";
 			Image = QXImage(nomImage);
 			AjoutEtoile = false;
@@ -235,6 +273,7 @@ void Viewer::DepilerAnnuler ()
 		//Depile la dernière image d'annuler en courante
 		Image = Pile.pop();
 		nomImage = PileNom.pop();
+		AjoutEtoile = true;
 		update();
 	}
 	else
@@ -242,9 +281,9 @@ void Viewer::DepilerAnnuler ()
 		"La pile est vide");
 
 	if(nomImage.isEmpty())
-		BoutonActionEnable(false);
+		boutonActionEnable(false);
 	else
-		BoutonActionEnable(true);
+		boutonActionEnable(true);
 }
 
 void Viewer::DepilerRefaire ()
@@ -252,7 +291,7 @@ void Viewer::DepilerRefaire ()
 	if(!PileR.empty()&&!PileNomR.empty())
 	{
 		//Empile sur Annuler l'image courante
-		EmpilerAnnuler (Image);
+		empilerAnnuler (Image);
 
 		//Depile la dernière image d'annuler en courante
 		Image = PileR.pop();
@@ -264,9 +303,9 @@ void Viewer::DepilerRefaire ()
 		"La pile est vide");
 
 	if(nomImage.isEmpty())
-		BoutonActionEnable(false);
+		boutonActionEnable(false);
 	else
-		BoutonActionEnable(true);
+		boutonActionEnable(true);
 }
 
 void Viewer::DetruirePiles ()
@@ -279,15 +318,13 @@ void Viewer::DetruirePiles ()
 
 void Viewer::ImageNoirBlanc()
 {
-	AjoutEtoile = true;
-	EmpilerAnnuler(Image);
+	empilerAnnuler(Image);
 	Image.toGrayscale();
 }
 
 void Viewer::InverserImage()
 {
-	AjoutEtoile = true;
-	EmpilerAnnuler(Image);
+	empilerAnnuler(Image);
 	Image.invertPixels();
 }
 
@@ -305,12 +342,12 @@ void Viewer::AfficheSeuillageWidget()
 		ui.DWSeuillage->hide();
 
 	ImageTemp = Image;
+	ChangementSeuillage();
 }
 
 void Viewer::ValidationSeuillage()
 {
-	AjoutEtoile = true;
-	EmpilerAnnuler(ImageTemp);
+	empilerAnnuler(ImageTemp);
 	ui.DWSeuillage->hide();
 	ui.actionSeuillage->setChecked(false);
 }
@@ -346,12 +383,12 @@ void Viewer::AfficheReglageWidget()
 		ui.DWReglage->hide();
 
 	ImageTemp = Image;
+	ReglageCouleur();
 }
 
 void Viewer::ValidationCouleur()
 {
-	AjoutEtoile = true;
-	EmpilerAnnuler(ImageTemp);
+	empilerAnnuler(ImageTemp);
 	ui.DWReglage->hide();
 	ui.actionModifications_des_couleurs->setChecked(false);
 }
@@ -373,7 +410,7 @@ void Viewer::ReglageCouleur()
 	int vert = ui.hSliderVert->value();
 	int bleu = ui.hSliderBleu->value();
 
-	Image.Reglage(rouge, vert, bleu);
+	Image.Reglage(alpha, rouge, vert, bleu);
 
 	ui.labelNbLumosite->setText(QString::number(alpha));
 	ui.labelNbRouge->setText(QString::number(rouge));
@@ -389,30 +426,26 @@ void Viewer::modifTailleImage()
 
 void Viewer::MiroirH ()
 {
-	AjoutEtoile = true;
-	EmpilerAnnuler(Image);
+	empilerAnnuler(Image);
 	Image = Image.mirrored(true,false);
 }
 
 void Viewer::MiroirV ()
 {
-	AjoutEtoile = true;
-	EmpilerAnnuler(Image);
+	empilerAnnuler(Image);
 	//Valeur par défaut mais plus clair
 	Image = Image.mirrored(false,true);
 }
 
 void Viewer::Quart ()
 {
-	AjoutEtoile = true;
-	EmpilerAnnuler(Image);
+	empilerAnnuler(Image);
 	Image = Image.Tourner(1);
 }
 
 void Viewer::DemiTour ()
 {
-	AjoutEtoile = true;
-	EmpilerAnnuler(Image);
+	empilerAnnuler(Image);
 	Image = Image.Tourner(2);
 }
 
@@ -454,4 +487,28 @@ void Viewer::SpectreTout()
 {
 	int Max;
 	Image.Histo(0,Max);
+}
+
+void Viewer::Soustraire()
+{
+	QXImage imaTemp;
+	QString strTemp;
+	if(ouvertureFichier(strTemp,imaTemp))
+	{
+		empilerAnnuler(Image);
+		Image.SommeSoustraire(imaTemp, -1);
+	}
+	update();
+}
+
+void Viewer::Somme()
+{
+	QXImage imaTemp;
+	QString strTemp;
+	if(ouvertureFichier(strTemp,imaTemp))
+	{
+		empilerAnnuler(Image);
+		Image.SommeSoustraire(imaTemp);
+	}
+	update();
 }

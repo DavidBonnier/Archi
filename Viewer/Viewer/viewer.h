@@ -45,10 +45,12 @@ private:
 	void paintEvent ( QPaintEvent * event);
 	void closeEvent ( QCloseEvent *event);
 
-	void EmpilerAnnuler( QXImage img);
+	void empilerAnnuler( QXImage img);
 
-	void BoutonActionEnable ( bool Enable);
+	void boutonActionEnable ( bool Enable);
 	bool peutEtreSauver ();
+
+	bool ouvertureFichier(QString &fichierOuvert, QXImage &imageOuvert);
 
 private slots:
 	void A_propos ();
@@ -79,6 +81,8 @@ private slots:
 	void SpectreRouge();
 	void SpectreVert();
 	void SpectreTout();
+	void Soustraire();
+	void Somme();
 };
 
 #endif // VIEWER_H

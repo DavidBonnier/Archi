@@ -219,26 +219,16 @@ void Viewer::Sauver()
 void Viewer::Sauver_sous()
 {
 	Fichier = QFileDialog::getSaveFileName(this,tr("Sauvgarder Fichier"),MonRep,tr("(*.png *.jpg *.bmp)"));
-	QString extention (Fichier.split(".").back());
-	//vérification des 3 extention avant de continuer
-	if(extention!="png" && extention!="jpg" && extention!="bmp")
+
+	if(!Fichier.isEmpty())
 	{
-		QMessageBox::warning(this,"Viewer",
-			"<b>Image non enregistré</b>"
-			"<p>pas d'extention ou mauvaise extention</p>"
-			"<p> Les extentions supporter sont : <b>bmp</b> ; <b>jpg</b> ; <b>png</b> ",
-			"OK");
+		//Vue que l'on a un fichier on peut passer les boutons action peuvent etre utilisés
+		boutonActionEnable(true);
+		nomImage = Fichier.split("/").back();
+		Sauver();
+		Image = QXImage(Fichier);
+		update();
 	}
-	else
-		if(!Fichier.isEmpty())
-		{
-			Image = QXImage(Fichier);
-			//Vue que l'on a un fichier on peut passer les boutons action peuvent etre utilisés
-			boutonActionEnable(true);
-			nomImage = Fichier.split("/").back();
-			Sauver();
-			update();
-		}
 }
 
 void Viewer::Fermer()

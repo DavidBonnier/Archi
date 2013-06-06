@@ -25,11 +25,56 @@ QXImage& QXImage::operator = (const QImage &image)
 	return *this = QXImage(image);
 }
 
-int * QXImage::Histo ( int Coul, int &Maxi)
+void QXImage::Histo (int *tableau, int Coul, int &Maxi)
 {
-	int tableau[256];
-	++tableau[10];
-	return tableau;
+	Maxi=0;
+	switch(Coul)
+	{
+	case 1:
+		for(int i=0; i<width(); i++)
+			for(int j=0; j<height();j++)
+			{
+				int rouge = qRed(pixel(i,j));
+				tableau[rouge] ++;
+				if(tableau[rouge] > Maxi)
+					Maxi = tableau[rouge];
+			}
+			break;
+	case 2:
+		for(int i=0; i<width(); i++)
+			for(int j=0; j<height();j++)
+			{
+				int vert = qGreen(pixel(i,j));
+				tableau[vert] ++;
+				if(tableau[vert] > Maxi)
+					Maxi = tableau[vert];
+			}
+			break;
+	case 3:
+		if(Coul==3 || Coul==0)
+		{
+			for(int i=0; i<width(); i++)
+				for(int j=0; j<height();j++)
+				{
+					int bleu = qBlue(pixel(i,j));
+					tableau[bleu] ++;
+					if(tableau[bleu] > Maxi)
+						Maxi = tableau[bleu];
+				}
+		}
+		break;
+	case 0:
+		for(int i=0; i<width(); i++)
+			for(int j=0; j<height();j++)
+			{
+				int couleur = qBlue(pixel(i,j))+qGreen(pixel(i,j))+qRed(pixel(i,j));
+				couleur /= 3;
+				tableau[couleur] ++;
+				if(tableau[couleur] > Maxi)
+						Maxi = tableau[couleur];
+			}
+			break;
+	}
 }
 
 void QXImage::toGrayscale ( bool keepAlpha)
@@ -94,17 +139,13 @@ int QXImage::addValeur(int couleur, int valeur, int valeur1)
 QXImage QXImage::Tourner ( int Quart)
 {
 	QTransform transphormation;
-	transphormation = transphormation.rotate(90*Quart);
-
-	return transformed(transphormation);
+	return transformed(transphormation.rotate(90*Quart));
 }
 
 void QXImage::SommeSoustraire ( QXImage tmp, int signe)
 {
-	tmp = tmp.scaled(width(),height());
-
-	for(int i=0; i<width(); i++)
-		for(int j=0; j<height();j++)
+	for(int i=0; i<tmp.width(); i++)
+		for(int j=0; j<tmp.height();j++)
 		{
 			//multiplier par -1 change le signe et par 1 reste comme c'est
 			int bleu = addValeur(qBlue(pixel(i,j)), qBlue(tmp.pixel(i,j))*signe);

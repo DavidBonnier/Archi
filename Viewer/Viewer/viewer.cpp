@@ -30,7 +30,7 @@ Viewer::Viewer(QWidget *parent, Qt::WFlags flags)
 	connect (ui.actionFaire_un_quart_de_tour,SIGNAL(triggered()),this,SLOT(Quart()));
 	connect (ui.actionFaire_un_demi_tour,SIGNAL(triggered()),this,SLOT(DemiTour()));
 
-	//Spzctre Image
+	//Spectre Image
 	connect (ui.actionSpectre_de_l_image,SIGNAL(triggered()),this,SLOT(Histo()));
 	ui.DWSpectreImage->hide();
 	connect (ui.radioButtonSpectreBleu,SIGNAL(clicked()),this,SLOT(SpectreBleu()));
@@ -51,7 +51,9 @@ Viewer::Viewer(QWidget *parent, Qt::WFlags flags)
 	connect (ui.spinBoxMinSeuillage,SIGNAL(valueChanged(int)),this,SLOT(ChangementSeuillage()));
 	ui.DWSeuillage->hide();
 	ui.spinBoxMaxSeuillage->setRange(0,255);
+	ui.spinBoxMinSeuillage->setValue(80);
 	ui.spinBoxMinSeuillage->setRange(0,255);
+	ui.spinBoxMaxSeuillage->setValue(150);
 
 	//QDockWidget Réglage des couleurs
 	connect (ui.pButtonValiderCouleur,SIGNAL(clicked()),this,SLOT(ValidationCouleur()));
@@ -182,7 +184,6 @@ bool Viewer::ouvertureFichier(QString &fichierOuvert, QXImage &imageOuvert)
 }
 
 
-
 /************************************************************
 ---------------- SLOTS PRIVATE ------------------------------
 ************************************************************/
@@ -202,10 +203,11 @@ void Viewer::Ouvrir()
 		Fermer();
 
 	if(ouvertureFichier(Fichier, Image))
-	{
 		nomImage = Fichier.split("/").back();
-		update();
-	}
+	else
+		DepilerAnnuler();
+
+	update();
 }
 
 void Viewer::Sauver()
@@ -344,19 +346,22 @@ void Viewer::ValidationSeuillage()
 
 void Viewer::AnnulationSeuillage()
 {
-	ui.spinBoxMinSeuillage->setValue(0);
-	ui.spinBoxMaxSeuillage->setValue(0);
+	ui.spinBoxMinSeuillage->setValue(80);
+	ui.spinBoxMaxSeuillage->setValue(150);
 	Image = ImageTemp;
 }
 
 void Viewer::ChangementSeuillage()
 {
-	Image = ImageTemp;
-	int Min = ui.spinBoxMinSeuillage->value();
-	int Max = ui.spinBoxMaxSeuillage->value();
-	ui.spinBoxMinSeuillage->setMaximum(Max);
-	ui.spinBoxMaxSeuillage->setMinimum(Min);
-	Image.Seuillage(Min, Max);
+	if(ui.actionSeuillage-> isChecked())
+	{
+		Image = ImageTemp;
+		int Min = ui.spinBoxMinSeuillage->value();
+		int Max = ui.spinBoxMaxSeuillage->value();
+		ui.spinBoxMinSeuillage->setMaximum(Max);
+		ui.spinBoxMaxSeuillage->setMinimum(Min);
+		Image.Seuillage(Min, Max);
+	}
 }
 
 void Viewer::AfficheReglageWidget()
@@ -381,6 +386,10 @@ void Viewer::ValidationCouleur()
 	empilerAnnuler(ImageTemp);
 	ui.DWReglage->hide();
 	ui.actionModifications_des_couleurs->setChecked(false);
+	ui.hSliderLumosite->setValue(0);
+	ui.hSliderRouge->setValue(0);
+	ui.hSliderVert->setValue(0);
+	ui.hSliderBleu->setValue(0);
 }
 
 void Viewer::AnnulationCouleur()
@@ -394,18 +403,21 @@ void Viewer::AnnulationCouleur()
 
 void Viewer::ReglageCouleur()
 {
-	Image = ImageTemp;
-	int alpha = ui.hSliderLumosite->value();
-	int rouge = ui.hSliderRouge->value();
-	int vert = ui.hSliderVert->value();
-	int bleu = ui.hSliderBleu->value();
+	if(ui.actionModifications_des_couleurs-> isChecked())
+	{
+		Image = ImageTemp;
+		int alpha = ui.hSliderLumosite->value();
+		int rouge = ui.hSliderRouge->value();
+		int vert = ui.hSliderVert->value();
+		int bleu = ui.hSliderBleu->value();
 
-	Image.Reglage(alpha, rouge, vert, bleu);
+		Image.Reglage(alpha, rouge, vert, bleu);
 
-	ui.labelNbLumosite->setText(QString::number(alpha));
-	ui.labelNbRouge->setText(QString::number(rouge));
-	ui.labelNbVert->setText(QString::number(vert));
-	ui.labelNbBleu->setText(QString::number(bleu));
+		ui.labelNbLumosite->setText(QString::number(alpha));
+		ui.labelNbRouge->setText(QString::number(rouge));
+		ui.labelNbVert->setText(QString::number(vert));
+		ui.labelNbBleu->setText(QString::number(bleu));
+	}
 }
 
 void Viewer::modifTailleImage()
@@ -448,36 +460,58 @@ void Viewer::Histo ()
 		ui.actionModifications_des_couleurs->setChecked(false);
 		ui.DWReglage->hide();
 		ui.DWSpectreImage->show();
+		ui.radioButtonSpectreRouge->setChecked(true);
+		SpectreRouge();
 	}
 	else
 		ui.DWSpectreImage->hide();
-
-	ImageTemp = Image;
 }
 
-void Viewer::SpectreBleu()
+
+void Viewer::SpectreTout()
 {
-	int Max;
-	Image.Histo(3,Max);
+	if(ui.actionSpectre_de_l_image-> isChecked())
+	{
+		int Max;
+		int tableau[256] = {0};
+		Image.Histo(tableau,0,Max);
+		ui.MonHisto -> setHisto(tableau, Max, 0);
+	}
 }
 
 void Viewer::SpectreRouge()
 {
-	int Max;
-	Image.Histo(1,Max);
+	if(ui.actionSpectre_de_l_image-> isChecked())
+	{
+		int Max;
+		int tableau[256] = {0};
+		Image.Histo(tableau,1,Max);
+		ui.MonHisto -> setHisto(tableau, Max, 1);
+	}
 }
 
 void Viewer::SpectreVert()
 {
-	int Max;
-	Image.Histo(2,Max);
+	if(ui.actionSpectre_de_l_image-> isChecked())
+	{
+		int Max;
+		int tableau[256] = {0};
+		Image.Histo(tableau,2,Max);
+		ui.MonHisto -> setHisto(tableau, Max, 2);
+	}
 }
 
-void Viewer::SpectreTout()
+void Viewer::SpectreBleu()
 {
-	int Max;
-	Image.Histo(0,Max);
+	if(ui.actionSpectre_de_l_image-> isChecked())
+	{
+		int Max;
+		int tableau[256] = {0};
+		Image.Histo(tableau,3,Max);
+		ui.MonHisto -> setHisto(tableau, Max, 3);
+	}
 }
+
 
 void Viewer::Soustraire()
 {

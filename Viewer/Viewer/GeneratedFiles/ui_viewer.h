@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'viewer.ui'
 **
-** Created: Tue 4. Jun 11:12:29 2013
+** Created: Thu 6. Jun 09:09:27 2013
 **      by: Qt User Interface Compiler version 4.8.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -32,6 +32,7 @@
 #include <QtGui/QToolBar>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
+#include "Histo.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -107,7 +108,8 @@ public:
     QRadioButton *radioButtonSpectreVert;
     QRadioButton *radioButtonSpectreRouge;
     QRadioButton *radioButtonSpectreTout;
-    QWidget *MonHisto;
+    CHisto *MonHisto;
+    QSpacerItem *verticalSpacer_2;
 
     void setupUi(QMainWindow *ViewerClass)
     {
@@ -350,7 +352,7 @@ public:
         ViewerClass->addDockWidget(static_cast<Qt::DockWidgetArea>(1), DWReglage);
         DWSpectreImage = new QDockWidget(ViewerClass);
         DWSpectreImage->setObjectName(QString::fromUtf8("DWSpectreImage"));
-        DWSpectreImage->setMinimumSize(QSize(296, 159));
+        DWSpectreImage->setMinimumSize(QSize(174, 454));
         DWSpectreImage->setFeatures(QDockWidget::DockWidgetMovable);
         dockWidgetContents = new QWidget();
         dockWidgetContents->setObjectName(QString::fromUtf8("dockWidgetContents"));
@@ -360,6 +362,7 @@ public:
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         groupBox = new QGroupBox(dockWidgetContents);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
+        groupBox->setMaximumSize(QSize(200, 100));
         gridLayout_2 = new QGridLayout(groupBox);
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
@@ -387,10 +390,16 @@ public:
 
         verticalLayout->addWidget(groupBox);
 
-        MonHisto = new QWidget(dockWidgetContents);
+        MonHisto = new CHisto(dockWidgetContents);
         MonHisto->setObjectName(QString::fromUtf8("MonHisto"));
+        MonHisto->setMinimumSize(QSize(0, 300));
+        MonHisto->setMaximumSize(QSize(16777215, 400));
 
         verticalLayout->addWidget(MonHisto);
+
+        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer_2);
 
         DWSpectreImage->setWidget(dockWidgetContents);
         ViewerClass->addDockWidget(static_cast<Qt::DockWidgetArea>(1), DWSpectreImage);

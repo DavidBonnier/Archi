@@ -14,7 +14,7 @@ public:
 public:
 	QXImage& operator = (const QImage &image);
 
-	int * Histo ( int Coul, int &Maxi);
+	void Histo  (int *tableau, int Coul, int &Maxi);
 	void toGrayscale ( bool keepAlpha = true);
 	void Seuillage ( int Min, int Max );
 	void Reglage ( int ValA, int ValR, int ValG, int ValB );
